@@ -1,0 +1,9 @@
+bin/
+obj/
+/packages/
+riderModule.iml
+/_ReSharper.Caches/
+# apparently you're meant to commit this but nah
+.idea/
+# god no why
+*.sln.DotSettings.user
