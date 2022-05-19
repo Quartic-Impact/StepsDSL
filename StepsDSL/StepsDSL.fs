@@ -1,70 +1,65 @@
 module StepsDSL
 
-open System.Text.Json
-open System.Text.Json.Serialization
 
 let inline unionToStr u = (string u).ToUpper()
 
-// TODO: Remove my OOP code ew -- sink
-
-type EventBase(t: string) =
-    [<JsonPropertyName "type">]
-    member _.TYPE = t
-
-type Events = EventBase[]
-
-type SetMapSounds(sounds: string) =
-    inherit EventBase("SET_MAP_SOUNDS")
-    member _.mapSounds = sounds
-
 type PauseBGMTime = | Immediately
-
-type PauseBGM(mode: PauseBGMTime) =
-    inherit EventBase("PAUSE_BGM")
-    member _.mode = unionToStr mode
-
 type ZoomType = Light | Dark
-type SetZoomBlur(zType: ZoomType, duration: double, fadeIn: double, fadeOut: double, name: string) =
-    inherit EventBase("SET_ZOOM_BLUR")
-    member _.zoomType = unionToStr zType
-    member _.fadeIn = fadeIn
-    member _.fadeOut = fadeOut
-    member _.duration = duration
-    member _.name = name
-
-type SetMobilityBlock(value: string) =
-    inherit EventBase("SET_MOBILITY_BLOCK")
-    member _.value = value
-
-type SetOverlay(color: string, alpha: double, time: double, overMsg: bool) =
-    inherit EventBase("SET_OVERLAY")
-    member _.color = color
-    member _.alpha = alpha
-    member _.time = time
-    member _.overMessage = overMsg
-
 type ChangeVarType = | Set
-type ChangeVarBool(name: string, changeType: ChangeVarType, value: bool) =
-    inherit EventBase("CHANGE_VAR_BOOL")
-    member _.varName = name
-    member _.changeType = changeType.ToString().ToLower()
-    member _.value = value
 
-type If(condition: string, thenStep: Events, ?elseStep: Events) =
-    inherit EventBase("IF")
-    member _.withElse with get() = Option.isSome elseStep
-    member _.condition = condition
+type internal SET_MAP_SOUNDS = 
+    { mapSounds: string }
+    member this.``type`` = this.GetType().Name
 
-    member _.thenStep = thenStep
-    member _.elseStep = defaultArg elseStep null
+type internal PAUSE_BGM = 
+    { mode: string }
+    member this.``type`` = this.GetType().Name
 
-type Cutscene(events: Events) =
-    member _.event = events
+type internal SET_ZOOM_BLUR =
+    {
+        zoomType: string
+        fadeIn: double // TODO: are these ints?
+        fadeOut: double
+        duration: double
+        name: string
+    }
+    member this.``type`` = this.GetType().Name
 
-let genCutscene (events: Events) =
-    let options = JsonSerializerOptions()
-    options.WriteIndented <- true // not minified!
-    options.IncludeFields <- true
+type internal SET_MOBILITY_BLOCK = 
+    { value: string }
+    member this.``type`` = this.GetType().Name
 
-    // TODO polymorphic recursive serialisation doesnt work, SH*T
-    JsonSerializer.Serialize(Cutscene events, options)
+type internal SET_OVERLAY =
+    {
+        color: string
+        alpha: double
+        time: double
+        overMessage: string
+    }
+    member this.``type`` = this.GetType().Name
+
+type internal CHANGE_VAR_BOOL =
+    {
+        varName: string
+        changeType: string
+        value: bool
+    }
+    member this.``type`` = this.GetType().Name
+
+type internal IF =
+    {
+        withElse: bool
+        condition: string
+        thenStep: obj[]
+        elseStep: obj[]
+    }
+    member this.``type`` = this.GetType().Name
+
+type internal Step =
+    | SET_MAP_SOUNDS of SET_MAP_SOUNDS
+    | PAUSE_BGM of PAUSE_BGM
+    | SET_ZOOM_BLUR of SET_ZOOM_BLUR
+    | SET_MOBILITY_BLOCK of SET_MOBILITY_BLOCK
+    | SET_OVERLAY of SET_OVERLAY
+    | CHANGE_VAR_BOOL of CHANGE_VAR_BOOL
+    | IF of IF
