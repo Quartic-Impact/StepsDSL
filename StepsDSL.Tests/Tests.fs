@@ -3,11 +3,6 @@ module StepsDSL.Tests
 open NUnit.Framework
 open StepsDSL
 
-let testData: Events = [|
-    SetMapSounds ""
-    SetZoomBlur(Light, 4, 0, 2, "")
-|]
-
 (*[<SetUp>]
 let Setup () =
     ()*)
@@ -15,10 +10,21 @@ let Setup () =
 [<Test>]
 let FullTest () =
     let expected = """{
-  "event": []
-}
-"""
-    
+  "event": [
+    {
+      "type": "SET_MAP_SOUNDS"
+    },
+    {
+      "type": "SET_ZOOM_BLUR"
+    }
+  ]
+}"""
+    let testData: Events =
+        [|
+            SetMapSounds ""
+            SetZoomBlur(Light, 4, 0, 2, "")
+        |]
+
     let actual = genCutscene testData
     
     Assert.AreEqual(expected, actual)
