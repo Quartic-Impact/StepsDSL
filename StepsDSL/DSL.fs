@@ -4,16 +4,16 @@ open StepsDSL.Types
 
 let inline private unionToStr u = (string u).ToUpper()
 
-let private toObjArr (arr: 'a[]) = arr |> Array.map (fun f -> f :> obj)
+let private toObjArr (arr: Step[]) = arr |> Array.map (fun f -> f.raw)
 
 let (>>>) (s1: Step[]) s2 = Array.append s1 s2
 
-let setMapSounds s = [| Smsds { mapSounds = s }|]
+let setMapSounds s = [| SetMapSounds { mapSounds = s }|]
 
-let pauseBGM (mode: PauseBGMTime) = [| Pbgm { mode = unionToStr mode }|]
+let pauseBGM (mode: PauseBGMTime) = [| PauseBgm { mode = unionToStr mode }|]
 
 let setZoomBlur name dur fIn fOut (t: ZoomType) = 
-    [| Szmblr
+    [| SetZoomBlur
         {
             zoomType = unionToStr t
             name = name
@@ -23,10 +23,10 @@ let setZoomBlur name dur fIn fOut (t: ZoomType) =
         } 
     |]
 
-let setMobilityBlock value = [| Smbb { value = value } |]
+let setMobilityBlock value = [| SetMobilityBlock { value = value } |]
 
 let setOverlay time col alpha overMsg =
-    [| Solay 
+    [| SetOverlay 
         {
             color = col
             alpha = alpha
@@ -36,7 +36,7 @@ let setOverlay time col alpha overMsg =
     |]
 
 let changeVarBool vName (cType: ChangeVarType) value = 
-    [| Cvb 
+    [| ChangeVarBool 
         {
             varName = vName
             changeType = unionToStr cType
