@@ -1,21 +1,19 @@
-module StepsDSL
+module StepsDSL.Types
 
-
-let inline unionToStr u = (string u).ToUpper()
 
 type PauseBGMTime = | Immediately
 type ZoomType = Light | Dark
 type ChangeVarType = | Set
 
-type internal SET_MAP_SOUNDS = 
+type  SET_MAP_SOUNDS = 
     { mapSounds: string }
     member this.``type`` = this.GetType().Name
 
-type internal PAUSE_BGM = 
+type  PAUSE_BGM = 
     { mode: string }
     member this.``type`` = this.GetType().Name
 
-type internal SET_ZOOM_BLUR =
+type  SET_ZOOM_BLUR =
     {
         zoomType: string
         fadeIn: double // TODO: are these ints?
@@ -25,20 +23,20 @@ type internal SET_ZOOM_BLUR =
     }
     member this.``type`` = this.GetType().Name
 
-type internal SET_MOBILITY_BLOCK = 
+type  SET_MOBILITY_BLOCK = 
     { value: string }
     member this.``type`` = this.GetType().Name
 
-type internal SET_OVERLAY =
+type  SET_OVERLAY =
     {
         color: string
         alpha: double
         time: double
-        overMessage: string
+        overMessage: bool
     }
     member this.``type`` = this.GetType().Name
 
-type internal CHANGE_VAR_BOOL =
+type  CHANGE_VAR_BOOL =
     {
         varName: string
         changeType: string
@@ -46,7 +44,7 @@ type internal CHANGE_VAR_BOOL =
     }
     member this.``type`` = this.GetType().Name
 
-type internal IF =
+type  IF =
     {
         withElse: bool
         condition: string
@@ -55,11 +53,11 @@ type internal IF =
     }
     member this.``type`` = this.GetType().Name
 
-type internal Step =
-    | SET_MAP_SOUNDS of SET_MAP_SOUNDS
-    | PAUSE_BGM of PAUSE_BGM
-    | SET_ZOOM_BLUR of SET_ZOOM_BLUR
-    | SET_MOBILITY_BLOCK of SET_MOBILITY_BLOCK
-    | SET_OVERLAY of SET_OVERLAY
-    | CHANGE_VAR_BOOL of CHANGE_VAR_BOOL
-    | IF of IF
+type  Step =
+    | Smsds of SET_MAP_SOUNDS
+    | Pbgm of PAUSE_BGM
+    | Szmblr of SET_ZOOM_BLUR
+    | Smbb of SET_MOBILITY_BLOCK
+    | Solay of SET_OVERLAY
+    | Cvb of CHANGE_VAR_BOOL
+    | If' of IF

@@ -1,11 +1,9 @@
 module StepsDSL.Tests
 
 open NUnit.Framework
-open StepsDSL
-
-(*[<SetUp>]
-let Setup () =
-    ()*)
+open StepsDSL.DSL
+open StepsDSL.Types
+open StepsDSL.Emitter
 
 [<Test>]
 let FullTest () =
@@ -19,12 +17,18 @@ let FullTest () =
     }
   ]
 }"""
-    let testData: Events =
-        [|
-            SetMapSounds ""
-            SetZoomBlur(Light, 4, 0, 2, "")
-        |]
 
-    let actual = genCutscene testData
+    let testData =
+      setMapSounds ""
+      >>> pauseBGM Immediately
+      >>> setZoomBlur "" 4 0 1 Light
+      >>> setMobilityBlock "SAVE"
+      >>> setOverlay 0 "black" 1 false
+      >>> ifElse 
+          "g.exploreNotified == true"
+          noneStep
+          (changeVarBool "g.exploreNotified" Set false)
+
+    let actual = genToRet testData
     
     Assert.AreEqual(expected, actual)
