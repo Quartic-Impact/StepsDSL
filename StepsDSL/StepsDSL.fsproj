@@ -15,6 +15,7 @@
         <Compile Include="Types.fs"/>
         <Compile Include="DSL.fs"/>
         <Compile Include="Emitter.fs"/>
+        <None Include="../LICENSE" Pack="true" PackagePath="" />
     </ItemGroup>
 
 </Project>
