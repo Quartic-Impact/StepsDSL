@@ -18,9 +18,9 @@ type StepConverter() =
 
 let genToRet (s: Step []) =
     let opts = JsonSerializerOptions()
-    opts.Converters.Add (StepConverter())
+    opts.Converters.Add(StepConverter())
     opts.WriteIndented <- true
-    JsonSerializer.Serialize (s, opts)
+    JsonSerializer.Serialize(s, opts)
 
 let genToConsole = genToRet >> printfn "%s"
 

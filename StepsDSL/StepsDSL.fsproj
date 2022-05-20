@@ -6,9 +6,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Include="Types.fs" />
-        <Compile Include="DSL.fs" />
-        <Compile Include="Emitter.fs" />
+        <Compile Include="Types.fs"/>
+        <Compile Include="DSL.fs"/>
+        <Compile Include="Emitter.fs"/>
     </ItemGroup>
 
 </Project>

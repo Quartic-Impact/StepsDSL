@@ -19,7 +19,7 @@ type PAUSE_BGM =
 
 type SET_ZOOM_BLUR =
     {zoomType: string
-     fadeIn: double 
+     fadeIn: double
      fadeOut: double
      duration: double
      name: string}

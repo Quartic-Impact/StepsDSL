@@ -57,5 +57,5 @@ let FullTest () =
     let actual = genToRet testData
 
     printfn $"%s{actual}"
-    
+
     Assert.AreEqual(expected, actual)
